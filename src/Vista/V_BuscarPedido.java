@@ -141,7 +141,7 @@ public class V_BuscarPedido extends javax.swing.JInternalFrame implements Runnab
         PanelCentro.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         PanelCentro.setLayout(new javax.swing.BoxLayout(PanelCentro, javax.swing.BoxLayout.Y_AXIS));
 
-        Datos.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos del Producto"));
+        Datos.setBorder(javax.swing.BorderFactory.createTitledBorder("Criterios de Busqueda"));
         Datos.setLayout(new javax.swing.BoxLayout(Datos, javax.swing.BoxLayout.Y_AXIS));
 
         jPanel6.setLayout(new javax.swing.BoxLayout(jPanel6, javax.swing.BoxLayout.X_AXIS));
