@@ -64,6 +64,7 @@
         <Menu class="javax.swing.JMenu" name="MenuSesion">
           <Properties>
             <Property name="text" type="java.lang.String" value="Sesi&#xf3;n"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem7">

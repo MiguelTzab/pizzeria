@@ -28,7 +28,7 @@ public class Menu extends javax.swing.JFrame {
             new ImageIcon(getClass().getResource("/img/logo.png")).getImage());
         
         initComponents();
-        login();
+        //login();
     }
     public void login(){
         V_Login l = new V_Login(con);
@@ -126,6 +126,7 @@ public class Menu extends javax.swing.JFrame {
         menuBar.add(jMenu3);
 
         MenuSesion.setText("Sesión");
+        MenuSesion.setEnabled(false);
 
         jMenuItem7.setText("Iniciar Sesión");
         jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
