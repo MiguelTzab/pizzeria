@@ -7,6 +7,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
 
 
 
@@ -24,9 +26,6 @@ public class Menu extends javax.swing.JFrame {
         Application.getApplication().setDockIconImage(
             new ImageIcon(getClass().getResource("/img/logo.png")).getImage());
         initComponents();
-    }
-    public JDesktopPane getjDesktopPane(){
-	return desktopPane;
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -131,12 +130,14 @@ public class Menu extends javax.swing.JFrame {
             V_AltaUsuario users = new V_AltaUsuario(con);
             users.setSize(this.desktopPane.getSize());
             if(this.desktopPane.getComponentCount()!=0){
+                JInternalFrame[] f = desktopPane.getAllFrames();
+                f[0].dispose();
                 this.desktopPane.removeAll();
             }
             users.setVisible(true);
             this.desktopPane.add(users);
         } catch (SQLException ex) {
-            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error al abrir la ventana\n"+ex, "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
@@ -145,12 +146,14 @@ public class Menu extends javax.swing.JFrame {
             V_AltaProducto prod = new V_AltaProducto(con);
             prod.setSize(this.desktopPane.getSize());
             if(this.desktopPane.getComponentCount()!=0){
+                JInternalFrame[] f = desktopPane.getAllFrames();
+                f[0].dispose();
                 this.desktopPane.removeAll();
             }
             prod.setVisible(true);
             this.desktopPane.add(prod);
         } catch (SQLException ex) {
-            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error al abrir la ventana\n"+ex, "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
@@ -159,12 +162,15 @@ public class Menu extends javax.swing.JFrame {
             V_AltaCliente Client = new V_AltaCliente(con);
             Client.setSize(this.desktopPane.getSize());
             if(this.desktopPane.getComponentCount()!=0){
+                JInternalFrame[] f = desktopPane.getAllFrames();
+                f[0].dispose();
                 this.desktopPane.removeAll();
             }
             Client.setVisible(true);
             this.desktopPane.add(Client);
         } catch (SQLException ex) {
-            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error al abrir la ventana\n"+ex, "Error", JOptionPane.ERROR_MESSAGE);
+        
         }
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
@@ -172,6 +178,8 @@ public class Menu extends javax.swing.JFrame {
         V_AltaPedido p = new V_AltaPedido(con);
         p.setSize(this.desktopPane.getSize());
         if(this.desktopPane.getComponentCount()!=0){
+            JInternalFrame[] f = desktopPane.getAllFrames();
+            f[0].dispose();
             this.desktopPane.removeAll();
         }
         p.setVisible(true);
@@ -192,12 +200,14 @@ public class Menu extends javax.swing.JFrame {
             V_BuscarPedido p = new V_BuscarPedido(con);
             p.setSize(this.desktopPane.getSize());
             if(this.desktopPane.getComponentCount()!=0){
+                JInternalFrame[] f = desktopPane.getAllFrames();
+                f[0].dispose();
                 this.desktopPane.removeAll();
             }
             p.setVisible(true);
             this.desktopPane.add(p);
         } catch (SQLException ex) {
-            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error al abrir la ventana\n"+ex, "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
