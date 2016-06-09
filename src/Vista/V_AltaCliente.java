@@ -8,8 +8,6 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -54,6 +52,7 @@ public class V_AltaCliente extends javax.swing.JInternalFrame implements Runnabl
             modTable.addRow(filas);
         }
         this.Table.setModel(modTable);
+        rs.close();
     }
     public void Limpiar(){
         txtNombre.setText("");
@@ -296,14 +295,12 @@ public class V_AltaCliente extends javax.swing.JInternalFrame implements Runnabl
                 consulta.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Guardado con Exito", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
             } catch (SQLException ex) {
-                Logger.getLogger(V_AltaCliente.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null, "Error:"+ex, "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
         try {
             CargarTabla();
         } catch (SQLException ex) {
-            Logger.getLogger(V_AltaCliente.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Error:" + ex, "Error al cargar la Tabla", JOptionPane.ERROR_MESSAGE);
         }
         Limpiar();
@@ -344,7 +341,6 @@ public class V_AltaCliente extends javax.swing.JInternalFrame implements Runnabl
             try {
                 CargarTabla();
             } catch (SQLException ex) {
-                Logger.getLogger(V_AltaCliente.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null, "Error:" + ex, "Error al cargar la Tabla", JOptionPane.ERROR_MESSAGE);
         
             }

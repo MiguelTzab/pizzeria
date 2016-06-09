@@ -8,8 +8,6 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -53,6 +51,88 @@ public class V_BuscarPedido extends javax.swing.JInternalFrame implements Runnab
             modTable.addRow(filas);
         }
         this.Table.setModel(modTable);
+        rs.close();
+    }
+    public void CargarTabla(String nombre, String numero) throws SQLException{
+        ResultSet rs;
+        String sen = "SELECT pedido.id_pedido,pedido.fecha, pedido.total, cliente.Nombre FROM pedido, cliente "
+                + "WHERE (pedido.id_cliente=cliente.id_cliente) AND (cliente.Nombre='"+nombre+"' AND cliente.Numero='"+numero+"')";
+        rs = cn.ejecutarSQLSelect(sen);
+        ResultSetMetaData metadata = rs.getMetaData();
+        
+        //Agregamos los datos de la cabecera de la tabla
+        
+        Object[] col = new Object[metadata.getColumnCount()];
+        int columnas = metadata.getColumnCount();
+        for (int i = 1; i <= columnas; i++) {
+            col[i-1]=metadata.getColumnName(i);
+        }
+        
+        DefaultTableModel modTable = new DefaultTableModel(null,col);
+        Object[] filas = new Object[columnas];
+        while (rs.next()) {
+            //agregamos una de las filas de la tabla
+            for (int j = 1; j <= columnas; j++) {
+                filas[j-1]=(rs.getString(j));
+            }
+            modTable.addRow(filas);
+        }
+        this.Table.setModel(modTable);
+        rs.close();
+    }
+    public void CargarTabla(String nombre) throws SQLException{
+        ResultSet rs;
+        String sen = "SELECT pedido.id_pedido,pedido.fecha, pedido.total, cliente.Nombre FROM pedido, cliente "
+                + "WHERE (pedido.id_cliente=cliente.id_cliente) AND (cliente.Nombre='"+nombre+"')";
+        rs = cn.ejecutarSQLSelect(sen);
+        ResultSetMetaData metadata = rs.getMetaData();
+        
+        //Agregamos los datos de la cabecera de la tabla
+        
+        Object[] col = new Object[metadata.getColumnCount()];
+        int columnas = metadata.getColumnCount();
+        for (int i = 1; i <= columnas; i++) {
+            col[i-1]=metadata.getColumnName(i);
+        }
+        
+        DefaultTableModel modTable = new DefaultTableModel(null,col);
+        Object[] filas = new Object[columnas];
+        while (rs.next()) {
+            //agregamos una de las filas de la tabla
+            for (int j = 1; j <= columnas; j++) {
+                filas[j-1]=(rs.getString(j));
+            }
+            modTable.addRow(filas);
+        }
+        this.Table.setModel(modTable);
+        rs.close();
+    }
+    public void CargarTabla(int numero , String num) throws SQLException{
+        ResultSet rs;
+        String sen = "SELECT pedido.id_pedido,pedido.fecha, pedido.total, cliente.Nombre FROM pedido, cliente "
+                + "WHERE (pedido.id_cliente=cliente.id_cliente) AND (cliente.Numero='"+num+"')";
+        rs = cn.ejecutarSQLSelect(sen);
+        ResultSetMetaData metadata = rs.getMetaData();
+        
+        //Agregamos los datos de la cabecera de la tabla
+        
+        Object[] col = new Object[metadata.getColumnCount()];
+        int columnas = metadata.getColumnCount();
+        for (int i = 1; i <= columnas; i++) {
+            col[i-1]=metadata.getColumnName(i);
+        }
+        
+        DefaultTableModel modTable = new DefaultTableModel(null,col);
+        Object[] filas = new Object[columnas];
+        while (rs.next()) {
+            //agregamos una de las filas de la tabla
+            for (int j = 1; j <= columnas; j++) {
+                filas[j-1]=(rs.getString(j));
+            }
+            modTable.addRow(filas);
+        }
+        this.Table.setModel(modTable);
+        rs.close();
     }
     public void calcula () {        
         Calendar calendario = new GregorianCalendar();
@@ -73,8 +153,7 @@ public class V_BuscarPedido extends javax.swing.JInternalFrame implements Runnab
     }
     public void Limpiar(){
         txtNombre.setText("");
-        txtDescripcion.setText("");
-        txtPrecio.setText("");
+        txtNumero.setText("");
     }
     
     
@@ -97,19 +176,15 @@ public class V_BuscarPedido extends javax.swing.JInternalFrame implements Runnab
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(100, 0), new java.awt.Dimension(100, 0), new java.awt.Dimension(100, 32767));
         jPanel7 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(16, 0), new java.awt.Dimension(16, 0), new java.awt.Dimension(16, 32767));
-        txtDescripcion = new javax.swing.JTextField();
+        filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(26, 0), new java.awt.Dimension(26, 0), new java.awt.Dimension(26, 32767));
+        txtNumero = new javax.swing.JTextField();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(100, 0), new java.awt.Dimension(100, 0), new java.awt.Dimension(100, 32767));
-        jPanel8 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(11, 0), new java.awt.Dimension(11, 0), new java.awt.Dimension(11, 32767));
-        txtPrecio = new javax.swing.JTextField();
-        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(100, 0), new java.awt.Dimension(100, 0), new java.awt.Dimension(100, 32767));
+        jPanel9 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
         Tabla = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         Table = new javax.swing.JTable();
         PanelSur = new javax.swing.JPanel();
-        btnGuardar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
 
@@ -158,27 +233,28 @@ public class V_BuscarPedido extends javax.swing.JInternalFrame implements Runnab
 
         jPanel7.setLayout(new javax.swing.BoxLayout(jPanel7, javax.swing.BoxLayout.LINE_AXIS));
 
-        jLabel3.setText("Direccion:");
+        jLabel3.setText("Numero:");
         jPanel7.add(jLabel3);
         jPanel7.add(filler6);
 
-        txtDescripcion.setMaximumSize(new java.awt.Dimension(2147483647, 26));
-        jPanel7.add(txtDescripcion);
+        txtNumero.setMaximumSize(new java.awt.Dimension(2147483647, 26));
+        jPanel7.add(txtNumero);
         jPanel7.add(filler3);
 
         Datos.add(jPanel7);
 
-        jPanel8.setLayout(new javax.swing.BoxLayout(jPanel8, javax.swing.BoxLayout.LINE_AXIS));
+        jPanel9.setLayout(new java.awt.BorderLayout());
 
-        jLabel4.setText("Referencia:");
-        jPanel8.add(jLabel4);
-        jPanel8.add(filler8);
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/find.png"))); // NOI18N
+        jButton1.setText("Buscar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel9.add(jButton1, java.awt.BorderLayout.EAST);
 
-        txtPrecio.setMaximumSize(new java.awt.Dimension(2147483647, 26));
-        jPanel8.add(txtPrecio);
-        jPanel8.add(filler7);
-
-        Datos.add(jPanel8);
+        Datos.add(jPanel9);
 
         PanelCentro.add(Datos);
 
@@ -207,16 +283,6 @@ public class V_BuscarPedido extends javax.swing.JInternalFrame implements Runnab
 
         PanelSur.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/save.png"))); // NOI18N
-        btnGuardar.setText("Guardar");
-        btnGuardar.setPreferredSize(new java.awt.Dimension(130, 55));
-        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
-            }
-        });
-        PanelSur.add(btnGuardar);
-
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/pencil_medium.png"))); // NOI18N
         btnEditar.setText("Editar");
         btnEditar.setPreferredSize(new java.awt.Dimension(130, 55));
@@ -242,53 +308,8 @@ public class V_BuscarPedido extends javax.swing.JInternalFrame implements Runnab
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        String nombre = txtNombre.getText(), descripcion=txtDescripcion.getText(),
-                precio = txtPrecio.getText();
-        PreparedStatement consulta;
-        if(editar && id_pedido!=0){
-            if(cn.ejecutarSQL("UPDATE producto\n" +
-            "  SET Nombre='"+nombre+"', Descripcion='"+descripcion+"', Precio="+precio+"\n" +
-            "  WHERE id_Producto = "+ id_pedido)){
-                JOptionPane.showMessageDialog(null, "Guardado con Exito", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
-                editar=false;
-                this.Table.setEnabled(true);
-                this.btnEditar.setEnabled(true);
-                this.btnEliminar.setEnabled(true);
-                id_pedido =0;
-            }  
-        }else{
-            try {
-                consulta = cn.getConexion().prepareStatement("INSERT INTO producto" + "(Nombre, Descripcion, Precio) VALUES(?, ?, ?)");
-                consulta.setString(1, nombre);
-                consulta.setString(2, descripcion);
-                consulta.setString(3, precio);
-                consulta.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Guardado con Exito", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
-            } catch (SQLException ex) {
-                Logger.getLogger(V_AltaCliente.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(null, "Error:"+ex, "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-        try {
-            CargarTabla();
-        } catch (SQLException ex) {
-            Logger.getLogger(V_AltaCliente.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Error:" + ex, "Error al cargar la Tabla", JOptionPane.ERROR_MESSAGE);
-        }
-        Limpiar();
-    }//GEN-LAST:event_btnGuardarActionPerformed
-
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        int s = this.Table.getSelectedRow();
-        id_pedido = Integer.parseInt(this.Table.getValueAt(s,0).toString());
-        txtNombre.setText(this.Table.getValueAt(s, 1).toString());
-        txtDescripcion.setText(this.Table.getValueAt(s,2 ).toString());
-        txtPrecio.setText(this.Table.getValueAt(s, 3).toString());
-        this.Table.setEnabled(false);
-        this.btnEditar.setEnabled(false);
-        this.btnEliminar.setEnabled(false);
-        editar =true;
+        
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
@@ -297,7 +318,6 @@ public class V_BuscarPedido extends javax.swing.JInternalFrame implements Runnab
         this.Table.setEnabled(false);
         this.btnEditar.setEnabled(false);
         this.btnEliminar.setEnabled(false);
-        this.btnGuardar.setEnabled(false);
         int dialogResult = JOptionPane.showConfirmDialog (null, "Desea eliminar el registro seleccionado?","Advertencia",JOptionPane.YES_NO_OPTION);
         if(dialogResult == JOptionPane.YES_OPTION){
             if(cn.ejecutarSQL("DELETE FROM pedido WHERE id_pedido =" +id_pedido )){
@@ -305,16 +325,15 @@ public class V_BuscarPedido extends javax.swing.JInternalFrame implements Runnab
                 this.Table.setEnabled(true);
                 this.btnEditar.setEnabled(true);
                 this.btnEliminar.setEnabled(true);
-                this.btnGuardar.setEnabled(true);
                 cn.ejecutarSQL("DELETE FROM pedido_producto WHERE id_pedido =" +id_pedido );
                 id_pedido =0;
+                
             }else{
                 JOptionPane.showMessageDialog(null, "No se logro eliminar el elemento seleccionado", "Error", JOptionPane.ERROR_MESSAGE);
             }
             try {
                 CargarTabla();
             } catch (SQLException ex) {
-                Logger.getLogger(V_AltaCliente.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null, "Error:" + ex, "Error al cargar la Tabla", JOptionPane.ERROR_MESSAGE);
         
             }
@@ -322,8 +341,35 @@ public class V_BuscarPedido extends javax.swing.JInternalFrame implements Runnab
         this.Table.setEnabled(true);
         this.btnEditar.setEnabled(true);
         this.btnEliminar.setEnabled(true);
-        this.btnGuardar.setEnabled(true);
     }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if(!(txtNumero.getText().isEmpty())&&(!(txtNombre.getText().isEmpty()))){
+            try {
+                CargarTabla(txtNombre.getText(), txtNumero.getText());
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error:" + ex, "Error al cargar la Tabla", JOptionPane.ERROR_MESSAGE);
+            }
+        }else if(!(txtNumero.getText().isEmpty())){
+            try {
+                CargarTabla(1,txtNumero.getText());
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error:" + ex, "Error al cargar la Tabla", JOptionPane.ERROR_MESSAGE);
+            }
+        }else if(!(txtNombre.getText().isEmpty())){
+            try {
+                CargarTabla(txtNombre.getText());
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error:" + ex, "Error al cargar la Tabla", JOptionPane.ERROR_MESSAGE);
+            }
+        }else{
+            try {
+                CargarTabla();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error:" + ex, "Error al cargar la Tabla", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -335,28 +381,24 @@ public class V_BuscarPedido extends javax.swing.JInternalFrame implements Runnab
     private javax.swing.JTable Table;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
-    private javax.swing.JButton btnGuardar;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
     private javax.swing.Box.Filler filler5;
     private javax.swing.Box.Filler filler6;
-    private javax.swing.Box.Filler filler7;
-    private javax.swing.Box.Filler filler8;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblFecha;
     private javax.swing.JLabel lblUser;
-    private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextField txtNombre;
-    private javax.swing.JTextField txtPrecio;
+    private javax.swing.JTextField txtNumero;
     // End of variables declaration//GEN-END:variables
 
     @Override

@@ -29,7 +29,7 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
      * Creates new form V_AltaUsuario
      */
     Conexiones cn;
-    private DefaultTableModel modTable;
+    DefaultTableModel modTable;
     int id_cliente =0;
     String hora,minutos,segundos,ampm;
     Calendar calendario;    
@@ -61,7 +61,7 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
     }
     public void cargaTabla(){
         Object col[] = new Object[]{"id_Producto","Nombre","Precio","Cantidad"};
-        this.modTable = new DefaultTableModel(null, col);
+        modTable = new DefaultTableModel(null, col);
     }
     public void AgregarTabla(int id_Producto, int cantidad, DefaultTableModel mod)throws SQLException{
                                                 
@@ -276,9 +276,17 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "id_producto", "Nombre", "Precio", "Cantidad"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(Table);
 
         Tabla.add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -347,22 +355,24 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
         try {                                         
             ResultSet rs;
             rs = cn.ejecutarSQLSelect("Select nombre, id_producto from producto");
-            ResultSetMetaData metadata = rs.getMetaData();
+            //ResultSetMetaData metadata = rs.getMetaData();
             ArrayList<String> list = new ArrayList<String>();
             ArrayList<String> id = new ArrayList<String>();
             while (rs.next()) {
                 list.add(rs.getString(1));
                 id.add(rs.getString(2));
             }
+            try{
+                Object res = JOptionPane.showInputDialog(null, "Selecciona uno", "Buscar Producto", JOptionPane.QUESTION_MESSAGE,
+                        null, list.toArray(), "Pizzeria");
+                String r = JOptionPane.showInputDialog(null, "Cantidad");
+                AgregarTabla(Integer.parseInt(id.get(list.indexOf(res))),Integer.parseInt(r), modTable);
+            }catch(Exception ex){
+                JOptionPane.showMessageDialog(null, "Error ningun producto seleccionado", "Error", JOptionPane.ERROR_MESSAGE);
+        
+            }
             
-            Object res = JOptionPane.showInputDialog(null, "Selecciona uno", "Buscar Producto", JOptionPane.QUESTION_MESSAGE,
-                    null, list.toArray(), "Pizzeria");
-            String r = JOptionPane.showInputDialog(null, "Cantidad");
-            AgregarTabla(Integer.parseInt(id.get(list.indexOf(res))),Integer.parseInt(r), modTable);
-            
-            //System.out.println(id.get(list.indexOf(res)));
         } catch (SQLException ex) {
-            Logger.getLogger(V_AltaPedido.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Error al Obtener los productos", "Error", JOptionPane.ERROR_MESSAGE);
         }
         

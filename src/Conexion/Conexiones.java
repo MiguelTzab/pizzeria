@@ -55,6 +55,7 @@ public class Conexiones {
                 ")");
             con.close();
             System.out.println("Se ha creado la tabla correctamente");
+            
        } catch (SQLException ex) {
           ex.printStackTrace();
           return false;
