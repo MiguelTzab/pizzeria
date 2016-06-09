@@ -42,6 +42,45 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
         h1.start();
         
     }
+    public V_AltaPedido(Conexiones con, int id_pedido)throws SQLException {
+        cn=con;
+        cargaTabla();
+        initComponents();
+        h1 = new Thread(this);
+        h1.start();
+        cargarPedido(id_pedido);
+    }
+    public void cargarPedido(int id)throws SQLException{
+        ResultSet rs;
+        int id_cliente=0;
+        rs = cn.ejecutarSQLSelect("Select id_cliente from pedido WHERE id_Pedido =" + id);
+        if(rs.next()) {
+            id_cliente = rs.getInt("id_cliente");
+        }
+        rs = cn.ejecutarSQLSelect("Select Nombre,Direccion,Referencia, Numero from cliente WHERE id_Cliente =" + id_cliente);
+        if(rs.next()) {
+            txtNombre.setText(rs.getString("Nombre"));
+            txtNumero.setText(rs.getString("Numero"));
+            txtReferencia.setText(rs.getString("Referencia"));
+            txtDireccion.setText(rs.getString("Direccion"));
+        }
+        ResultSet mr;
+        mr = cn.ejecutarSQLSelect("Select id_producto, cantidad from pedido_producto WHERE id_Pedido =" + id);
+        while (mr.next()) {
+            rs = cn.ejecutarSQLSelect("Select id_producto,nombre,precio from producto WHERE id_Producto =" + mr.getString("id_producto"));
+            Object[] filas = new Object[4];
+            while (rs.next()) {
+               for (int j = 1; j <= 3; j++) {
+                    filas[j-1]=(rs.getString(j));
+                }
+                filas[3]= mr.getInt("cantidad");
+                modTable.addRow(filas);
+            }
+        }
+        ActualizarTotal(modTable);
+        Table.setModel(modTable);
+        
+    }
     public void calcula () {        
         Calendar calendario = new GregorianCalendar();
         Date fechaHoraActual = new Date();
@@ -83,19 +122,17 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
     }
     public void AgregarTabla(int id_Producto, int cantidad, DefaultTableModel mod, int row)throws SQLException{
         ResultSet rs;
-            rs = cn.ejecutarSQLSelect("Select id_producto,nombre,precio from producto WHERE id_Producto =" + id_Producto);
-            Object[] filas = new Object[4];
-            
-            while (rs.next()) {
-                //agregamos una de las filas de la tabla
-                for (int j = 1; j <= 3; j++) {
-                    filas[j-1]=(rs.getString(j));
-                    mod.setValueAt(rs.getString(j), row, j-1);
-                }
-                mod.setValueAt(cantidad, row, 3);
+        rs = cn.ejecutarSQLSelect("Select id_producto,nombre,precio from producto WHERE id_Producto =" + id_Producto);
+        Object[] filas = new Object[4];
+        while (rs.next()) {
+           for (int j = 1; j <= 3; j++) {
+                filas[j-1]=(rs.getString(j));
+                mod.setValueAt(rs.getString(j), row, j-1);
             }
-            this.Table.setModel(mod);
-            ActualizarTotal(mod);
+            mod.setValueAt(cantidad, row, 3);
+        }
+        this.Table.setModel(mod);
+        ActualizarTotal(mod);
     }
     public void AgregarTabla(DefaultTableModel d, int row){
         d.removeRow(row);

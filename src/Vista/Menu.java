@@ -23,7 +23,6 @@ public class Menu extends javax.swing.JFrame {
         setIconImage(new ImageIcon(getClass().getResource("/img/logo.png")).getImage());
         Application.getApplication().setDockIconImage(
             new ImageIcon(getClass().getResource("/img/logo.png")).getImage());
-        
         initComponents();
     }
     public JDesktopPane getjDesktopPane(){

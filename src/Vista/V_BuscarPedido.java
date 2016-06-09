@@ -1,13 +1,13 @@
 package Vista;
 
 import Conexion.Conexiones;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -309,38 +309,64 @@ public class V_BuscarPedido extends javax.swing.JInternalFrame implements Runnab
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        int s = Table.getSelectedRow();
+        System.out.println(s);
+        System.out.println(Integer.parseInt(Table.getValueAt(Table.getSelectedRow(), 0).toString()));
+        if(s!=(-1)){
+            try {
+                JDesktopPane d = this.getDesktopPane();
+                V_AltaPedido p = new V_AltaPedido(cn, Integer.parseInt(Table.getValueAt(Table.getSelectedRow(), 0).toString()));
+                p.setSize(d.getSize());
+                if(d.getComponentCount()!=0){
+                    d.removeAll();
+                }
+                p.setVisible(true);
+                d.add(p);
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, ex, "Error al Editar", JOptionPane.ERROR_MESSAGE);
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Ningun Elemento Seleccionado", "Error", JOptionPane.ERROR_MESSAGE);
+        }
         
+        //JOptionPane.showMessageDialog(null, "Por el momento no se puede editar un pedido.\nPorfavor, espere nuestra proxima actualizacion", "Error al Editar", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         int s = this.Table.getSelectedRow();
-        id_pedido = Integer.parseInt(this.Table.getValueAt(s,0).toString());
-        this.Table.setEnabled(false);
-        this.btnEditar.setEnabled(false);
-        this.btnEliminar.setEnabled(false);
-        int dialogResult = JOptionPane.showConfirmDialog (null, "Desea eliminar el registro seleccionado?","Advertencia",JOptionPane.YES_NO_OPTION);
-        if(dialogResult == JOptionPane.YES_OPTION){
-            if(cn.ejecutarSQL("DELETE FROM pedido WHERE id_pedido =" +id_pedido )){
-                JOptionPane.showMessageDialog(null, "Eliminado con Exito", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
-                this.Table.setEnabled(true);
-                this.btnEditar.setEnabled(true);
-                this.btnEliminar.setEnabled(true);
-                cn.ejecutarSQL("DELETE FROM pedido_producto WHERE id_pedido =" +id_pedido );
-                id_pedido =0;
-                
-            }else{
-                JOptionPane.showMessageDialog(null, "No se logro eliminar el elemento seleccionado", "Error", JOptionPane.ERROR_MESSAGE);
+        if(s!=(-1)){
+            id_pedido = Integer.parseInt(this.Table.getValueAt(s,0).toString());
+            this.Table.setEnabled(false);
+            this.btnEditar.setEnabled(false);
+            this.btnEliminar.setEnabled(false);
+            int dialogResult = JOptionPane.showConfirmDialog (null, "Desea eliminar el registro seleccionado?","Advertencia",JOptionPane.YES_NO_OPTION);
+            if(dialogResult == JOptionPane.YES_OPTION){
+                if(cn.ejecutarSQL("DELETE FROM pedido WHERE id_pedido =" +id_pedido )){
+                    JOptionPane.showMessageDialog(null, "Eliminado con Exito", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+                    this.Table.setEnabled(true);
+                    this.btnEditar.setEnabled(true);
+                    this.btnEliminar.setEnabled(true);
+                    cn.ejecutarSQL("DELETE FROM pedido_producto WHERE id_pedido =" +id_pedido );
+                    id_pedido =0;
+
+                }else{
+                    JOptionPane.showMessageDialog(null, "No se logro eliminar el elemento seleccionado", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                try {
+                    CargarTabla();
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Error:" + ex, "Error al cargar la Tabla", JOptionPane.ERROR_MESSAGE);
+
+                }
             }
-            try {
-                CargarTabla();
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, "Error:" + ex, "Error al cargar la Tabla", JOptionPane.ERROR_MESSAGE);
-        
-            }
+            this.Table.setEnabled(true);
+            this.btnEditar.setEnabled(true);
+            this.btnEliminar.setEnabled(true);
+        }else{
+            JOptionPane.showMessageDialog(null, "Ningun Elemento Seleccionado", "Error", JOptionPane.ERROR_MESSAGE);
+
         }
-        this.Table.setEnabled(true);
-        this.btnEditar.setEnabled(true);
-        this.btnEliminar.setEnabled(true);
+        
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
