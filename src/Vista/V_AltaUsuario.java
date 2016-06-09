@@ -152,7 +152,7 @@ public class V_AltaUsuario extends javax.swing.JInternalFrame implements Runnabl
 
         PanelNorte.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/banner.png"))); // NOI18N
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/ufgkjh.jpg"))); // NOI18N
         jPanel4.add(jLabel6);
 
         PanelNorte.add(jPanel4);

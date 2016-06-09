@@ -130,7 +130,7 @@ public class V_AltaCliente extends javax.swing.JInternalFrame implements Runnabl
 
         PanelNorte.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/banner.png"))); // NOI18N
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/ufgkjh.jpg"))); // NOI18N
         jPanel4.add(jLabel5);
 
         PanelNorte.add(jPanel4);

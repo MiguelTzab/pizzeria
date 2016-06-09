@@ -1,9 +1,11 @@
 package Vista;
 
 import Conexion.Conexiones;
+import com.apple.eawt.Application;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 
 
@@ -18,6 +20,10 @@ public class Menu extends javax.swing.JFrame {
     public Menu() {
         con = new Conexiones();
         con.crearConexion();
+        setIconImage(new ImageIcon(getClass().getResource("/img/logo.png")).getImage());
+        Application.getApplication().setDockIconImage(
+            new ImageIcon(getClass().getResource("/img/logo.png")).getImage());
+        
         initComponents();
     }
     public JDesktopPane getjDesktopPane(){
@@ -46,7 +52,7 @@ public class Menu extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Pizzeria v1.0");
+        setTitle("Pizzeria v1.3");
         setMinimumSize(new java.awt.Dimension(1200, 700));
         setPreferredSize(new java.awt.Dimension(600, 400));
 
