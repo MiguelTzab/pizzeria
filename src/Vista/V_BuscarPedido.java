@@ -310,8 +310,6 @@ public class V_BuscarPedido extends javax.swing.JInternalFrame implements Runnab
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         int s = Table.getSelectedRow();
-        System.out.println(s);
-        System.out.println(Integer.parseInt(Table.getValueAt(Table.getSelectedRow(), 0).toString()));
         if(s!=(-1)){
             try {
                 JDesktopPane d = this.getDesktopPane();

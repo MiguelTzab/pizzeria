@@ -30,7 +30,8 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
      */
     Conexiones cn;
     DefaultTableModel modTable;
-    int id_cliente =0;
+    int id_cliente=0;
+    int id_pedido=0;
     String hora,minutos,segundos,ampm;
     Calendar calendario;    
     Thread h1;
@@ -48,11 +49,11 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
         initComponents();
         h1 = new Thread(this);
         h1.start();
+        this.id_pedido=id_pedido;
         cargarPedido(id_pedido);
     }
     public void cargarPedido(int id)throws SQLException{
         ResultSet rs;
-        int id_cliente=0;
         rs = cn.ejecutarSQLSelect("Select id_cliente from pedido WHERE id_Pedido =" + id);
         if(rs.next()) {
             id_cliente = rs.getInt("id_cliente");
@@ -79,6 +80,7 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
         }
         ActualizarTotal(modTable);
         Table.setModel(modTable);
+        cn.ejecutarSQL("DELETE FROM pedido_producto WHERE id_pedido ="+id);
         
     }
     public void calcula () {        
@@ -473,80 +475,108 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
     }//GEN-LAST:event_txtNumeroKeyReleased
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        try {
-            ResultSet rs;
-            if(id_cliente==0){
-                String nombre = txtNombre.getText(), direccion=txtDireccion.getText(),
-                        referencia = txtReferencia.getText();
-                String numero=txtNumero.getText();
-                PreparedStatement consulta;
-                try {
-                    consulta = cn.getConexion().prepareStatement("INSERT INTO cliente" + "(Nombre, Direccion, Referencia, Numero) VALUES(?, ?, ?, ?)");
-                    consulta.setString(1, nombre);
-                    consulta.setString(2, direccion);
-                    consulta.setString(3, referencia);
-                    consulta.setString(4, numero);
-                    consulta.executeUpdate();
+        ResultSet rs;
+        PreparedStatement consulta;
+        if(id_pedido==0){
+            try {
+                if(id_cliente==0){
+                    String nombre = txtNombre.getText(), direccion=txtDireccion.getText(),
+                            referencia = txtReferencia.getText();
+                    String numero=txtNumero.getText();
                     
-                    rs = cn.ejecutarSQLSelect("Select id_cliente from cliente WHERE (numero='"+numero+"' AND nombre='"+nombre+"'");
-                    if(rs.next()){
-                        id_cliente=rs.getInt(1);
-                    }else{
-                        JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
+                    try {
+                        consulta = cn.getConexion().prepareStatement("INSERT INTO cliente" + "(Nombre, Direccion, Referencia, Numero) VALUES(?, ?, ?, ?)");
+                        consulta.setString(1, nombre);
+                        consulta.setString(2, direccion);
+                        consulta.setString(3, referencia);
+                        consulta.setString(4, numero);
+                        consulta.executeUpdate();
+
+                        rs = cn.ejecutarSQLSelect("Select id_cliente from cliente WHERE (numero='"+numero+"' AND nombre='"+nombre+"'");
+                        if(rs.next()){
+                            id_cliente=rs.getInt(1);
+                        }else{
+                            JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, "Error:"+ex, "Error", JOptionPane.ERROR_MESSAGE);
                     }
-                } catch (SQLException ex) {
-                    Logger.getLogger(V_AltaCliente.class.getName()).log(Level.SEVERE, null, ex);
-                    JOptionPane.showMessageDialog(null, "Error:"+ex, "Error", JOptionPane.ERROR_MESSAGE);
-                }
-                
-            }   
-            PreparedStatement consulta;
-            consulta = cn.getConexion().prepareStatement("INSERT INTO pedido" + "(id_usuario, id_cliente, fecha, total) VALUES(?, ?, ?, ?)");
-            consulta.setInt(1, 1);
-            consulta.setInt(2, id_cliente);
-            java.util.Date utilDate = new java.util.Date(); //fecha actual
-            long lnMilisegundos = utilDate.getTime();
-            java.sql.Date sqlDate = new java.sql.Date(lnMilisegundos);
-            String fec = sqlDate.toString();
-            consulta.setString(3, fec);
-            consulta.setInt(4, Integer.parseInt(lblTotal.getText()));
-            consulta.executeUpdate();
-            int id_pedido=0;
-            rs = cn.ejecutarSQLSelect("SELECT id_pedido FROM pedido WHERE (id_cliente="+id_cliente+" AND fecha='"+fec+"')");
-            if(rs.next()){
-                id_pedido=rs.getInt(1);
-            }else{
-                JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-            //Implementacion faltante
-            int columnas=4;
-            int filas = modTable.getRowCount();
-            int id_producto=0, cantidad=0;
-            for(int q=0;q<filas;q++){
-                id_producto = Integer.parseInt(modTable.getValueAt(q, 0).toString());
-                cantidad = Integer.parseInt(modTable.getValueAt(q, 3).toString());
-                consulta = cn.getConexion().prepareStatement("INSERT INTO pedido_producto" + "(id_producto, id_pedido, cantidad) VALUES(?, ?, ?)");
-                consulta.setInt(1, id_producto);
-                consulta.setInt(2, id_pedido);
-                consulta.setInt(3, cantidad);
+
+                }   
+                consulta = cn.getConexion().prepareStatement("INSERT INTO pedido" + "(id_usuario, id_cliente, fecha, total) VALUES(?, ?, ?, ?)");
+                consulta.setInt(1, 1);
+                consulta.setInt(2, id_cliente);
+                java.util.Date utilDate = new java.util.Date(); //fecha actual
+                long lnMilisegundos = utilDate.getTime();
+                java.sql.Date sqlDate = new java.sql.Date(lnMilisegundos);
+                String fec = sqlDate.toString();
+                consulta.setString(3, fec);
+                consulta.setInt(4, Integer.parseInt(lblTotal.getText()));
                 consulta.executeUpdate();
+                id_pedido=0;
+                rs = cn.ejecutarSQLSelect("SELECT id_pedido FROM pedido WHERE (id_cliente="+id_cliente+" AND fecha='"+fec+"')");
+                if(rs.next()){
+                    id_pedido=rs.getInt(1);
+                }else{
+                    JOptionPane.showMessageDialog(null, "Error al guardar los datos", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                //Implementacion faltante
+                int columnas=4;
+                int filas = modTable.getRowCount();
+                int id_producto=0, cantidad=0;
+                for(int q=0;q<filas;q++){
+                    id_producto = Integer.parseInt(modTable.getValueAt(q, 0).toString());
+                    cantidad = Integer.parseInt(modTable.getValueAt(q, 3).toString());
+                    consulta = cn.getConexion().prepareStatement("INSERT INTO pedido_producto" + "(id_producto, id_pedido, cantidad) VALUES(?, ?, ?)");
+                    consulta.setInt(1, id_producto);
+                    consulta.setInt(2, id_pedido);
+                    consulta.setInt(3, cantidad);
+                    consulta.executeUpdate();
+                }
+                JOptionPane.showMessageDialog(null, "Guardado con Exito", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error al registrar el pedido\n"+ex, "Mensaje", JOptionPane.ERROR_MESSAGE);
             }
-            JOptionPane.showMessageDialog(null, "Guardado con Exito", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
-        } catch (SQLException ex) {
-            Logger.getLogger(V_AltaPedido.class.getName()).log(Level.SEVERE, null, ex);
+        }else{
+            try {
+                consulta = cn.getConexion().prepareStatement("UPDATE pedido SET id_usuario=?, id_cliente=?, total=? WHERE id_pedido=?");
+                consulta.setInt(1, 1);
+                consulta.setInt(2, id_cliente);
+                consulta.setInt(3, Integer.parseInt(lblTotal.getText()));
+                consulta.setInt(4, id_pedido);
+                consulta.executeUpdate();
+                //Implementacion faltante
+                int columnas=4;
+                int filas = modTable.getRowCount();
+                int id_producto=0, cantidad=0;
+                for(int q=0;q<filas;q++){
+                    id_producto = Integer.parseInt(modTable.getValueAt(q, 0).toString());
+                    cantidad = Integer.parseInt(modTable.getValueAt(q, 3).toString());
+                    consulta = cn.getConexion().prepareStatement("INSERT INTO pedido_producto" + "(id_producto, id_pedido, cantidad) VALUES(?, ?, ?)");
+                    consulta.setInt(1, id_producto);
+                    consulta.setInt(2, id_pedido);
+                    consulta.setInt(3, cantidad);
+                    consulta.executeUpdate();
+                }
+                JOptionPane.showMessageDialog(null, "Guardado con Exito", "Mensaje", JOptionPane.INFORMATION_MESSAGE);   
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error al registrar el pedido\n"+ex, "Mensaje", JOptionPane.ERROR_MESSAGE);
+            
+            }
         }
         this.txtDireccion.setText("");      
         this.txtNombre.setText("");
         this.txtNumero.setText(""); 
         this.txtReferencia.setText(""); 
         this.txtProducto.setText("");
-        for(int y=0;y<this.modTable.getRowCount();y++){
-            this.modTable.removeRow(y);
+        int f=modTable.getRowCount();
+        for(int y=0;y<f;y++){
+            modTable.removeRow(y);
         }
         this.lblTotal.setText("$");
         
         
-        
+  
     }//GEN-LAST:event_btnGuardarActionPerformed
 
 
