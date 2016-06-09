@@ -37,8 +37,8 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
     Thread h1;
     public V_AltaPedido(Conexiones con) {
         cn=con;
-        cargaTabla();
         initComponents();
+        cargaTabla();
         h1 = new Thread(this);
         h1.start();
         
@@ -407,12 +407,12 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
                 String r = JOptionPane.showInputDialog(null, "Cantidad");
                 AgregarTabla(Integer.parseInt(id.get(list.indexOf(res))),Integer.parseInt(r), modTable);
             }catch(Exception ex){
-                JOptionPane.showMessageDialog(null, "Error ningun producto seleccionado", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Error Ningun Producto Seleccionado", "Error", JOptionPane.ERROR_MESSAGE);
         
             }
             
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error al Obtener los productos", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error al Obtener los productos\n"+ex, "Error", JOptionPane.ERROR_MESSAGE);
         }
         
     }//GEN-LAST:event_jButton1ActionPerformed
