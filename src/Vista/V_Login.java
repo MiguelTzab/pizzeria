@@ -6,6 +6,7 @@
 package Vista;
 
 import Conexion.Conexiones;
+import java.awt.event.KeyEvent;
 import java.lang.reflect.Method;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -77,6 +78,12 @@ public class V_Login extends javax.swing.JInternalFrame {
         jPanel4 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
 
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
+
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
 
         jLabel1.setText("Usuario:");
@@ -140,6 +147,36 @@ public class V_Login extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Error:"+ex, "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            char[] contra = txtContra.getPassword();
+            int s =id.get(cmbUser.getSelectedIndex());
+            try {
+                ResultSet r;
+                r = cn.ejecutarSQLSelect("SELECT Contraseña FROM usuario WHERE id_usuario="+s);
+                if(r.next()){
+                    if((String.valueOf(contra)).equals(r.getString("Contraseña"))){
+
+                        JOptionPane.showMessageDialog(null, "Acceso Correcto", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+                        Menu.Catalogos.setEnabled(true);
+                        Menu.jMenu3.setEnabled(true);
+                        Menu.jMenuItem7.setText(cmbUser.getSelectedItem().toString());
+                        Menu.jMenuItem7.setEnabled(false);
+                        Menu.jMenuItem8.setEnabled(true);
+                        this.dispose();
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Porfavor, verifique sus datos", "Acceso Incorrecto", JOptionPane.ERROR_MESSAGE);
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(null, "Porfavor, verifique sus datos", "Acceso Incorrecto", JOptionPane.ERROR_MESSAGE);
+                }
+                cn.cerrarConexion();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error:"+ex, "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_formKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

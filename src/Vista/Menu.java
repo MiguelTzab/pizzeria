@@ -26,6 +26,11 @@ public class Menu extends javax.swing.JFrame {
         login();
     }
     public void login(){
+        if(this.desktopPane.getComponentCount()!=0){
+                JInternalFrame[] f = desktopPane.getAllFrames();
+                f[0].dispose();
+                this.desktopPane.removeAll();
+        }
         V_Login l = new V_Login(con);
         l.setVisible(true);
         l.setSize(250, 160);
@@ -246,6 +251,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        
         login();
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 

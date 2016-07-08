@@ -219,6 +219,11 @@ public class V_AltaUsuario extends javax.swing.JInternalFrame implements Runnabl
         jPanel9.add(filler10);
 
         txtContra.setMaximumSize(new java.awt.Dimension(2147483647, 26));
+        txtContra.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtContraKeyTyped(evt);
+            }
+        });
         jPanel9.add(txtContra);
 
         jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.LINE_AXIS));
@@ -227,6 +232,11 @@ public class V_AltaUsuario extends javax.swing.JInternalFrame implements Runnabl
         jPanel3.add(jLabel1);
 
         txtContraRe.setMaximumSize(new java.awt.Dimension(2147483647, 26));
+        txtContraRe.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtContraReKeyTyped(evt);
+            }
+        });
         jPanel3.add(txtContraRe);
 
         jPanel9.add(jPanel3);
@@ -384,6 +394,18 @@ public class V_AltaUsuario extends javax.swing.JInternalFrame implements Runnabl
         this.btnEliminar.setEnabled(true);
         this.btnGuardar.setEnabled(true);
     }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void txtContraKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtContraKeyTyped
+        if(txtContra.getText().length()==4){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtContraKeyTyped
+
+    private void txtContraReKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtContraReKeyTyped
+        if(txtContraRe.getText().length()==4){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtContraReKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

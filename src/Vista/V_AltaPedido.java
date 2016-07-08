@@ -506,7 +506,7 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
                     }
 
                 }   
-                consulta = cn.getConexion().prepareStatement("INSERT INTO pedido" + "(id_usuario, id_cliente, fecha, total) VALUES(?, ?, ?, ?)");
+                consulta = cn.getConexion().prepareStatement("INSERT INTO pedido" + "(id_usuario, id_cliente, fecha, hora, total) VALUES(?, ?, ?, ?, ?)",Statement.RETURN_GENERATED_KEYS);
                 consulta.setInt(1, 1);
                 consulta.setInt(2, id_cliente);
                 java.util.Date utilDate = new java.util.Date(); //fecha actual
@@ -514,10 +514,11 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
                 java.sql.Date sqlDate = new java.sql.Date(lnMilisegundos);
                 String fec = sqlDate.toString();
                 consulta.setString(3, fec);
-                consulta.setInt(4, Integer.parseInt(lblTotal.getText()));
+                consulta.setString(4, lblFecha.getText());
+                consulta.setInt(5, Integer.parseInt(lblTotal.getText()));
                 consulta.executeUpdate();
                 id_pedido=0;
-                rs = cn.ejecutarSQLSelect("SELECT id_pedido FROM pedido WHERE (id_cliente="+id_cliente+" AND fecha='"+fec+"')");
+                rs =consulta.getGeneratedKeys();
                 if(rs.next()){
                     id_pedido=rs.getInt(1);
                 }else{
@@ -543,11 +544,12 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
             }
         }else{
             try {
-                consulta = cn.getConexion().prepareStatement("UPDATE pedido SET id_usuario=?, id_cliente=?, total=? WHERE id_pedido=?");
+                consulta = cn.getConexion().prepareStatement("UPDATE pedido SET id_usuario=?, id_cliente=?, total=?, hora=? WHERE id_pedido=?");
                 consulta.setInt(1, 1);
                 consulta.setInt(2, id_cliente);
                 consulta.setInt(3, Integer.parseInt(lblTotal.getText()));
                 consulta.setInt(4, id_pedido);
+                consulta.setString(5, lblFecha.getText());
                 consulta.executeUpdate();
                 //Implementacion faltante
                 int columnas=4;
@@ -562,7 +564,6 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
                     consulta.setInt(3, cantidad);
                     consulta.executeUpdate();
                 }
-                //cn.cerrarConexion();
                 JOptionPane.showMessageDialog(null, "Guardado con Exito", "Mensaje", JOptionPane.INFORMATION_MESSAGE);   
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, "Error al registrar el pedido\n"+ex, "Mensaje", JOptionPane.ERROR_MESSAGE);
@@ -575,8 +576,8 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
         this.txtNumero.setText(""); 
         this.txtReferencia.setText(""); 
         this.txtProducto.setText("");
-        int f=modTable.getRowCount();
-        for(int y=0;y<f;y++){
+        int f = this.Table.getRowCount();
+        for(int y=0;y<=f;y++){
             modTable.removeRow(y);
         }
         this.lblTotal.setText("$");

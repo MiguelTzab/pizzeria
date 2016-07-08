@@ -29,7 +29,7 @@ public class V_BuscarPedido extends javax.swing.JInternalFrame implements Runnab
 
     public void CargarTabla() throws SQLException{
         ResultSet rs;
-        String sen = "SELECT pedido.id_pedido, pedido.fecha, pedido.total, cliente.Nombre FROM pedido, cliente WHERE pedido.id_cliente=cliente.id_cliente";
+        String sen = "SELECT pedido.id_pedido, pedido.fecha, pedido.hora, pedido.total, cliente.Nombre FROM pedido, cliente WHERE pedido.id_cliente=cliente.id_cliente";
         rs = cn.ejecutarSQLSelect(sen);
         ResultSetMetaData metadata = rs.getMetaData();
         
@@ -56,7 +56,7 @@ public class V_BuscarPedido extends javax.swing.JInternalFrame implements Runnab
     }
     public void CargarTabla(String nombre, String numero) throws SQLException{
         ResultSet rs;
-        String sen = "SELECT pedido.id_pedido,pedido.fecha, pedido.total, cliente.Nombre FROM pedido, cliente "
+        String sen = "SELECT pedido.id_pedido,pedido.fecha, pedido.hora, pedido.total, cliente.Nombre FROM pedido, cliente "
                 + "WHERE (pedido.id_cliente=cliente.id_cliente) AND (cliente.Nombre='"+nombre+"' AND cliente.Numero='"+numero+"')";
         rs = cn.ejecutarSQLSelect(sen);
         ResultSetMetaData metadata = rs.getMetaData();
@@ -84,7 +84,7 @@ public class V_BuscarPedido extends javax.swing.JInternalFrame implements Runnab
     }
     public void CargarTabla(String nombre) throws SQLException{
         ResultSet rs;
-        String sen = "SELECT pedido.id_pedido,pedido.fecha, pedido.total, cliente.Nombre FROM pedido, cliente "
+        String sen = "SELECT pedido.id_pedido,pedido.fecha, pedido.hora, pedido.total, cliente.Nombre FROM pedido, cliente "
                 + "WHERE (pedido.id_cliente=cliente.id_cliente) AND (cliente.Nombre='"+nombre+"')";
         rs = cn.ejecutarSQLSelect(sen);
         ResultSetMetaData metadata = rs.getMetaData();
@@ -112,7 +112,7 @@ public class V_BuscarPedido extends javax.swing.JInternalFrame implements Runnab
     }
     public void CargarTabla(int numero , String num) throws SQLException{
         ResultSet rs;
-        String sen = "SELECT pedido.id_pedido,pedido.fecha, pedido.total, cliente.Nombre FROM pedido, cliente "
+        String sen = "SELECT pedido.id_pedido,pedido.fecha, pedido.hora, pedido.total, cliente.Nombre FROM pedido, cliente "
                 + "WHERE (pedido.id_cliente=cliente.id_cliente) AND (cliente.Numero='"+num+"')";
         rs = cn.ejecutarSQLSelect(sen);
         ResultSetMetaData metadata = rs.getMetaData();
