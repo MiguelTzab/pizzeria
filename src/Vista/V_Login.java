@@ -42,7 +42,7 @@ public class V_Login extends javax.swing.JInternalFrame {
                 id.add(rs.getInt("id_usuario"));
             }
             
-            
+            cn.cerrarConexion();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al Obtener los Usuarios\n"+ex, "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -123,13 +123,11 @@ public class V_Login extends javax.swing.JInternalFrame {
                 if((String.valueOf(contra)).equals(r.getString("Contraseña"))){
                     
                     JOptionPane.showMessageDialog(null, "Acceso Correcto", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
-                    Method[] c =Menu.class.getMethods();
-                    for (Method c1 : c) {
-                        if(c1.getName()=="login"){
-                            System.out.println("es login");
-                            
-                        }
-                    }
+                    Menu.Catalogos.setEnabled(true);
+                    Menu.jMenu3.setEnabled(true);
+                    Menu.jMenuItem7.setText(cmbUser.getSelectedItem().toString());
+                    Menu.jMenuItem7.setEnabled(false);
+                    this.dispose();
                 }else{
                     JOptionPane.showMessageDialog(null, "Porfavor, verifique sus datos", "Acceso Incorrecto", JOptionPane.ERROR_MESSAGE);
                 }

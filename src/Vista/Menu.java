@@ -23,7 +23,7 @@ public class Menu extends javax.swing.JFrame {
         setIconImage(new ImageIcon(getClass().getResource("/img/logo.png")).getImage());
         
         initComponents();
-        //login();
+        login();
     }
     public void login(){
         V_Login l = new V_Login(con);
@@ -39,6 +39,7 @@ public class Menu extends javax.swing.JFrame {
         if(r){
             jMenu3.setEnabled(r);
             Catalogos.setEnabled(r);
+            jMenuItem7.setText("Iniciar Sesión");
         }else{
             jMenu3.setEnabled(false);
             Catalogos.setEnabled(false);
@@ -67,7 +68,6 @@ public class Menu extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Pizzeria v1.3");
         setMinimumSize(new java.awt.Dimension(1200, 700));
-        setPreferredSize(new java.awt.Dimension(600, 400));
 
         desktopPane.setLayout(null);
         getContentPane().add(desktopPane, java.awt.BorderLayout.CENTER);
@@ -121,7 +121,6 @@ public class Menu extends javax.swing.JFrame {
         menuBar.add(jMenu3);
 
         MenuSesion.setText("Sesión");
-        MenuSesion.setEnabled(false);
 
         jMenuItem7.setText("Iniciar Sesión");
         jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
@@ -132,6 +131,11 @@ public class Menu extends javax.swing.JFrame {
         MenuSesion.add(jMenuItem7);
 
         jMenuItem8.setText("Cerrar Sesión");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
         MenuSesion.add(jMenuItem8);
 
         menuBar.add(MenuSesion);
@@ -243,6 +247,10 @@ public class Menu extends javax.swing.JFrame {
         login();
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        login();
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -280,17 +288,17 @@ public class Menu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Ayuda;
-    private javax.swing.JMenu Catalogos;
+    public static javax.swing.JMenu Catalogos;
     private javax.swing.JMenu MenuSesion;
     public javax.swing.JDesktopPane desktopPane;
-    private javax.swing.JMenu jMenu3;
+    public static javax.swing.JMenu jMenu3;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
+    public static javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     public javax.swing.JMenuBar menuBar;
     // End of variables declaration//GEN-END:variables

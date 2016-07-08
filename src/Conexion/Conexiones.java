@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -22,7 +23,7 @@ public class Conexiones {
     {
        try {
           
-            con = DriverManager.getConnection("jdbc:derby:test2;create=true");
+            con = DriverManager.getConnection("jdbc:derby:pizzeriaDB;create=true");
 
             if(!verificarArchivo()){
                 con.createStatement().execute("CREATE TABLE producto (id_Producto int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), " +
@@ -60,6 +61,14 @@ public class Conexiones {
                     "  Numero varchar(10) NOT NULL,"+
                     "  PRIMARY KEY (id_Cliente)\n" +
                     ")");
+                //con.createStatement().execute("INSERT INTO usuario (Nombre, Direccion, Puesto, Contraseña) VALUES('admin', 'conocido', 'admin', 1234)");   
+                PreparedStatement consulta;
+                consulta = con.prepareStatement("INSERT INTO usuario" + "(Nombre, Direccion, Puesto, Contraseña) VALUES(?, ?, ?, ?)");
+                consulta.setString(1, "admin");
+                consulta.setString(2, "Conocido");
+                consulta.setString(3, "Administrador");
+                consulta.setString(4, String.valueOf(1111));
+                consulta.executeUpdate();
                 con.close();
                 JOptionPane.showMessageDialog(null, "Se ha creado correctamente la Base de Datos", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
             }
