@@ -127,6 +127,7 @@ public class V_Login extends javax.swing.JInternalFrame {
                     Menu.jMenu3.setEnabled(true);
                     Menu.jMenuItem7.setText(cmbUser.getSelectedItem().toString());
                     Menu.jMenuItem7.setEnabled(false);
+                    Menu.jMenuItem8.setEnabled(true);
                     this.dispose();
                 }else{
                     JOptionPane.showMessageDialog(null, "Porfavor, verifique sus datos", "Acceso Incorrecto", JOptionPane.ERROR_MESSAGE);
@@ -134,7 +135,7 @@ public class V_Login extends javax.swing.JInternalFrame {
             }else{
                 JOptionPane.showMessageDialog(null, "Porfavor, verifique sus datos", "Acceso Incorrecto", JOptionPane.ERROR_MESSAGE);
             }
-            
+            cn.cerrarConexion();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error:"+ex, "Error", JOptionPane.ERROR_MESSAGE);
         }

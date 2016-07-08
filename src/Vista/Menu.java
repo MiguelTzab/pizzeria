@@ -39,10 +39,12 @@ public class Menu extends javax.swing.JFrame {
         if(r){
             jMenu3.setEnabled(r);
             Catalogos.setEnabled(r);
-            jMenuItem7.setText("Iniciar Sesión");
         }else{
             jMenu3.setEnabled(false);
             Catalogos.setEnabled(false);
+            jMenuItem7.setText("Iniciar Sesión");
+            jMenuItem7.setEnabled(true);
+            jMenuItem8.setEnabled(false);
         }
     }
     
@@ -299,7 +301,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     public static javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JMenuItem jMenuItem8;
+    public static javax.swing.JMenuItem jMenuItem8;
     public javax.swing.JMenuBar menuBar;
     // End of variables declaration//GEN-END:variables
 
