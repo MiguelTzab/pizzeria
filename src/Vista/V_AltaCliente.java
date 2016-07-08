@@ -53,6 +53,7 @@ public class V_AltaCliente extends javax.swing.JInternalFrame implements Runnabl
         }
         this.Table.setModel(modTable);
         rs.close();
+        cn.cerrarConexion();
     }
     public void Limpiar(){
         txtNombre.setText("");
@@ -161,6 +162,11 @@ public class V_AltaCliente extends javax.swing.JInternalFrame implements Runnabl
         jPanel3.add(filler4);
 
         txtNumero.setMaximumSize(new java.awt.Dimension(2147483647, 26));
+        txtNumero.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNumeroKeyTyped(evt);
+            }
+        });
         jPanel3.add(txtNumero);
         jPanel3.add(filler1);
 
@@ -303,6 +309,7 @@ public class V_AltaCliente extends javax.swing.JInternalFrame implements Runnabl
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error:" + ex, "Error al cargar la Tabla", JOptionPane.ERROR_MESSAGE);
         }
+        cn.cerrarConexion();
         Limpiar();
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -345,11 +352,18 @@ public class V_AltaCliente extends javax.swing.JInternalFrame implements Runnabl
         
             }
         }
+        cn.cerrarConexion();
         this.Table.setEnabled(true);
         this.btnEditar.setEnabled(true);
         this.btnEliminar.setEnabled(true);
         this.btnGuardar.setEnabled(true);
     }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void txtNumeroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumeroKeyTyped
+        if(txtNumero.getText().length()==10){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNumeroKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

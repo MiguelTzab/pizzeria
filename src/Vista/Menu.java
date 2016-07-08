@@ -1,12 +1,9 @@
 package Vista;
 
 import Conexion.Conexiones;
-import com.apple.eawt.Application;
+//import com.apple.eawt.Application;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 
@@ -24,8 +21,6 @@ public class Menu extends javax.swing.JFrame {
         con = new Conexiones();
         con.crearConexion();
         setIconImage(new ImageIcon(getClass().getResource("/img/logo.png")).getImage());
-        Application.getApplication().setDockIconImage(
-            new ImageIcon(getClass().getResource("/img/logo.png")).getImage());
         
         initComponents();
         //login();

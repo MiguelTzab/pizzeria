@@ -136,6 +136,9 @@
                       <Dimension value="[2147483647, 26]"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtNumeroKeyTyped"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.Box$Filler" name="filler1">
                   <Properties>

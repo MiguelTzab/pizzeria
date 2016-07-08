@@ -52,6 +52,7 @@ public class V_BuscarPedido extends javax.swing.JInternalFrame implements Runnab
         }
         this.Table.setModel(modTable);
         rs.close();
+        cn.cerrarConexion();
     }
     public void CargarTabla(String nombre, String numero) throws SQLException{
         ResultSet rs;
@@ -79,6 +80,7 @@ public class V_BuscarPedido extends javax.swing.JInternalFrame implements Runnab
         }
         this.Table.setModel(modTable);
         rs.close();
+        cn.cerrarConexion();
     }
     public void CargarTabla(String nombre) throws SQLException{
         ResultSet rs;
@@ -106,6 +108,7 @@ public class V_BuscarPedido extends javax.swing.JInternalFrame implements Runnab
         }
         this.Table.setModel(modTable);
         rs.close();
+        cn.cerrarConexion();
     }
     public void CargarTabla(int numero , String num) throws SQLException{
         ResultSet rs;
@@ -133,6 +136,7 @@ public class V_BuscarPedido extends javax.swing.JInternalFrame implements Runnab
         }
         this.Table.setModel(modTable);
         rs.close();
+        cn.cerrarConexion();
     }
     public void calcula () {        
         Calendar calendario = new GregorianCalendar();
@@ -238,6 +242,11 @@ public class V_BuscarPedido extends javax.swing.JInternalFrame implements Runnab
         jPanel7.add(filler6);
 
         txtNumero.setMaximumSize(new java.awt.Dimension(2147483647, 26));
+        txtNumero.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNumeroKeyTyped(evt);
+            }
+        });
         jPanel7.add(txtNumero);
         jPanel7.add(filler3);
 
@@ -346,7 +355,7 @@ public class V_BuscarPedido extends javax.swing.JInternalFrame implements Runnab
                     this.btnEliminar.setEnabled(true);
                     cn.ejecutarSQL("DELETE FROM pedido_producto WHERE id_pedido =" +id_pedido );
                     id_pedido =0;
-
+                    cn.cerrarConexion();
                 }else{
                     JOptionPane.showMessageDialog(null, "No se logro eliminar el elemento seleccionado", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -394,6 +403,12 @@ public class V_BuscarPedido extends javax.swing.JInternalFrame implements Runnab
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtNumeroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumeroKeyTyped
+        if(txtNumero.getText().length()==10){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNumeroKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

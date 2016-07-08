@@ -14,8 +14,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -81,7 +79,7 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
         ActualizarTotal(modTable);
         Table.setModel(modTable);
         cn.ejecutarSQL("DELETE FROM pedido_producto WHERE id_pedido ="+id);
-        
+        cn.cerrarConexion();
     }
     public void calcula () {        
         Calendar calendario = new GregorianCalendar();
@@ -105,22 +103,20 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
         modTable = new DefaultTableModel(null, col);
     }
     public void AgregarTabla(int id_Producto, int cantidad, DefaultTableModel mod)throws SQLException{
-                                                
-            ResultSet rs;
-            rs = cn.ejecutarSQLSelect("Select id_producto,nombre,precio from producto WHERE id_Producto =" + id_Producto);
-            Object[] filas = new Object[4];
-            
-            while (rs.next()) {
-                //agregamos una de las filas de la tabla
-                for (int j = 1; j <= 3; j++) {
-                    filas[j-1]=(rs.getString(j));
-                }
-                filas[3]= cantidad;
-                mod.addRow(filas);
+        ResultSet rs;
+        rs = cn.ejecutarSQLSelect("Select id_producto,nombre,precio from producto WHERE id_Producto =" + id_Producto);
+        Object[] filas = new Object[4];
+        while (rs.next()) {
+            for (int j = 1; j <= 3; j++) {
+                filas[j-1]=(rs.getString(j));
             }
-            this.Table.setModel(mod);
-            ActualizarTotal(mod);
-        
+            filas[3]= cantidad;
+            mod.addRow(filas);
+        }
+        this.Table.setModel(mod);
+        ActualizarTotal(mod);
+        cn.cerrarConexion();
+            
     }
     public void AgregarTabla(int id_Producto, int cantidad, DefaultTableModel mod, int row)throws SQLException{
         ResultSet rs;
@@ -135,6 +131,7 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
         }
         this.Table.setModel(mod);
         ActualizarTotal(mod);
+        cn.cerrarConexion();
     }
     public void AgregarTabla(DefaultTableModel d, int row){
         d.removeRow(row);
@@ -238,6 +235,9 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
 
         txtNumero.setMaximumSize(new java.awt.Dimension(2147483647, 26));
         txtNumero.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNumeroKeyTyped(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtNumeroKeyReleased(evt);
             }
@@ -407,9 +407,10 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
                 String r = JOptionPane.showInputDialog(null, "Cantidad");
                 AgregarTabla(Integer.parseInt(id.get(list.indexOf(res))),Integer.parseInt(r), modTable);
             }catch(Exception ex){
-                JOptionPane.showMessageDialog(null, "Error Ningun Producto Seleccionado", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Error Ningun Producto Seleccionado\n"+ex, "Error", JOptionPane.ERROR_MESSAGE);
         
             }
+            cn.cerrarConexion();
             
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al Obtener los productos\n"+ex, "Error", JOptionPane.ERROR_MESSAGE);
@@ -435,10 +436,9 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
                         null, list.toArray(), "Pizzeria");
                 String r = JOptionPane.showInputDialog(null, "Cantidad");
                 AgregarTabla(Integer.parseInt(id.get(list.indexOf(res))),Integer.parseInt(r), modTable, s);
-
+                cn.cerrarConexion();
                 //System.out.println(id.get(list.indexOf(res)));
             } catch (SQLException ex) {
-                Logger.getLogger(V_AltaPedido.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null, "Error al Obtener los productos", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }else{
@@ -457,20 +457,22 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void txtNumeroKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumeroKeyReleased
-        try {
-            ResultSet rs;
-            rs = cn.ejecutarSQLSelect("Select * from cliente WHERE numero='"+txtNumero.getText()+"'");
-            if(rs.next()){
-                txtNombre.setText(rs.getString(2));
-                txtDireccion.setText(rs.getString(3));
-                txtReferencia.setText(rs.getString(4));
-                id_cliente=rs.getInt(1);
-            }else{
-                id_cliente = 0;
+        if(txtNumero.getText().length()>7){
+            try {
+                ResultSet rs;
+                rs = cn.ejecutarSQLSelect("Select * from cliente WHERE numero='"+txtNumero.getText()+"'");
+                if(rs.next()){
+                    txtNombre.setText(rs.getString(2));
+                    txtDireccion.setText(rs.getString(3));
+                    txtReferencia.setText(rs.getString(4));
+                    id_cliente=rs.getInt(1);
+                }else{
+                    id_cliente = 0;
+                }
+                cn.cerrarConexion();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error al obtener datos de la Base de Datos", "Error", JOptionPane.ERROR_MESSAGE);
             }
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(V_AltaPedido.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_txtNumeroKeyReleased
 
@@ -533,6 +535,7 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
                     consulta.setInt(3, cantidad);
                     consulta.executeUpdate();
                 }
+                cn.cerrarConexion();
                 JOptionPane.showMessageDialog(null, "Guardado con Exito", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, "Error al registrar el pedido\n"+ex, "Mensaje", JOptionPane.ERROR_MESSAGE);
@@ -558,6 +561,7 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
                     consulta.setInt(3, cantidad);
                     consulta.executeUpdate();
                 }
+                cn.cerrarConexion();
                 JOptionPane.showMessageDialog(null, "Guardado con Exito", "Mensaje", JOptionPane.INFORMATION_MESSAGE);   
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, "Error al registrar el pedido\n"+ex, "Mensaje", JOptionPane.ERROR_MESSAGE);
@@ -578,6 +582,12 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
         
   
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void txtNumeroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumeroKeyTyped
+        if(txtNumero.getText().length()==10){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNumeroKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
