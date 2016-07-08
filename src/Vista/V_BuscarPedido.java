@@ -29,7 +29,7 @@ public class V_BuscarPedido extends javax.swing.JInternalFrame implements Runnab
 
     public void CargarTabla() throws SQLException{
         ResultSet rs;
-        String sen = "SELECT pedido.id_pedido,pedido.fecha, pedido.total, cliente.Nombre FROM pedido, cliente WHERE pedido.id_cliente=cliente.id_cliente";
+        String sen = "SELECT pedido.id_pedido, pedido.fecha, pedido.total, cliente.Nombre FROM pedido, cliente WHERE pedido.id_cliente=cliente.id_cliente";
         rs = cn.ejecutarSQLSelect(sen);
         ResultSetMetaData metadata = rs.getMetaData();
         

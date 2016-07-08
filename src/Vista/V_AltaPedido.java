@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -487,14 +488,14 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
                     String numero=txtNumero.getText();
                     
                     try {
-                        consulta = cn.getConexion().prepareStatement("INSERT INTO cliente" + "(Nombre, Direccion, Referencia, Numero) VALUES(?, ?, ?, ?)");
+                        consulta = cn.getConexion().prepareStatement("INSERT INTO cliente" + "(Nombre, Direccion, Referencia, Numero) VALUES(?, ?, ?, ?)",Statement.RETURN_GENERATED_KEYS);
                         consulta.setString(1, nombre);
                         consulta.setString(2, direccion);
                         consulta.setString(3, referencia);
                         consulta.setString(4, numero);
                         consulta.executeUpdate();
-
-                        rs = cn.ejecutarSQLSelect("Select id_cliente from cliente WHERE (numero='"+numero+"' AND nombre='"+nombre+"'");
+                        rs =consulta.getGeneratedKeys();
+                        //rs = cn.ejecutarSQLSelect("Select id_Cliente from cliente WHERE (numero='"+numero+"' AND nombre='"+nombre+"'");
                         if(rs.next()){
                             id_cliente=rs.getInt(1);
                         }else{
@@ -535,7 +536,7 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
                     consulta.setInt(3, cantidad);
                     consulta.executeUpdate();
                 }
-                cn.cerrarConexion();
+                //cn.cerrarConexion();
                 JOptionPane.showMessageDialog(null, "Guardado con Exito", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, "Error al registrar el pedido\n"+ex, "Mensaje", JOptionPane.ERROR_MESSAGE);
@@ -561,13 +562,14 @@ public class V_AltaPedido extends javax.swing.JInternalFrame implements Runnable
                     consulta.setInt(3, cantidad);
                     consulta.executeUpdate();
                 }
-                cn.cerrarConexion();
+                //cn.cerrarConexion();
                 JOptionPane.showMessageDialog(null, "Guardado con Exito", "Mensaje", JOptionPane.INFORMATION_MESSAGE);   
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, "Error al registrar el pedido\n"+ex, "Mensaje", JOptionPane.ERROR_MESSAGE);
             
             }
         }
+        cn.cerrarConexion();
         this.txtDireccion.setText("");      
         this.txtNombre.setText("");
         this.txtNumero.setText(""); 

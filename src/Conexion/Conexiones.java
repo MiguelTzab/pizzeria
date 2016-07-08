@@ -50,6 +50,7 @@ public class Conexiones {
                     "  id_Usuario int NOT NULL,\n" +
                     "  id_Cliente int NOT NULL,\n" +
                     "  fecha date NOT NULL,\n" +
+                   // "  hora varchar(15) NOT NULL,\n" +
                     "  total int NOT NULL,\n" +
                     "  PRIMARY KEY (id_Pedido)\n" +
                     ") ");
